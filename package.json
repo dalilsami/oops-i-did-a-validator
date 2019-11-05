@@ -1,0 +1,35 @@
+{
+  "name": "oops-i-did-a-validator",
+  "version": "1.0.0",
+  "description": "oops-i-did-a-validator is a simple object validator. It has presetted rules given with and you can actually add rules when importing it.",
+  "main": "dist/oops.js",
+  "scripts": {
+    "build": "npm run clean && npm run build-babel",
+    "build-babel": "babel -d ./dist ./src -s",
+    "clean": "rm -rf dist && mkdir dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dalilsami/oops-i-did-a-validator.git"
+  },
+  "keywords": [
+    "validator",
+    "configurable"
+  ],
+  "author": "Sami Dalil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dalilsami/oops-i-did-a-validator/issues"
+  },
+  "homepage": "https://github.com/dalilsami/oops-i-did-a-validator#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.0",
+    "@babel/node": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "nodemon": "^1.19.4"
+  }
+}
