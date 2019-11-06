@@ -1,6 +1,6 @@
 {
   "name": "oops-i-did-a-validator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "oops-i-did-a-validator is a simple object validator. It has presetted rules given with and you can actually add rules when importing it.",
   "main": "dist/Oops.js",
   "scripts": {
