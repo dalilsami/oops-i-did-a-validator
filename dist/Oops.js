@@ -36,36 +36,65 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Oops =
 /*#__PURE__*/
 function () {
-  function Oops(_ref) {
-    var rules = _ref.rules;
+  function Oops() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        rules = _ref.rules,
+        promisified = _ref.promisified;
 
     _classCallCheck(this, Oops);
 
-    if (!rules || (typeof additionnalRules === "undefined" ? "undefined" : _typeof(additionnalRules)) !== "object") {
+    if (!rules || _typeof(rules) !== "object") {
       rules = {};
     }
 
     this.rules = _objectSpread({}, rules, {}, presets);
+    this.promisified = promisified;
   }
+  /**
+   * check is the base validating function
+   *
+   * @param {Object} elem - the object to check
+   * @param {Object} scheme - the scheme to validate
+   * @param {[String]} method - POST or PATCH
+   * @param {[String]} name - the name of your object
+   * @returns {Promise?} - if promisified is true when creating the class,
+   * it returns a Promise, otherwise, it returns nothing
+   * and you have to catch the thrown error
+   */
+
 
   _createClass(Oops, [{
-    key: "checkRules",
-    value: function checkRules(rules) {
+    key: "check",
+    value: function check(elem, scheme, method, baseName) {
       var _this = this;
 
+      return this.promisified ? new Promise(function (res, rej) {
+        try {
+          res(_this._check(elem, scheme, method, baseName));
+        } catch (e) {
+          rej(e);
+        }
+      }) : this._check(elem, scheme, method, baseName);
+    }
+  }, {
+    key: "checkRules",
+    value: function checkRules(rules) {
+      var _this2 = this;
+
       Object.keys(rules).forEach(function (rule) {
-        if (!(rule in _this.rules)) {
+        if (!(rule in _this2.rules)) {
           throw new Error("".concat(rule, " is not an existing rule"));
         }
       });
     }
   }, {
-    key: "check",
-    value: function check(elem) {
-      var _this2 = this;
+    key: "_check",
+    value: function _check(elem) {
+      var _this3 = this;
 
       var scheme = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var name = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+      var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "POST";
+      var baseName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "";
 
       if (_typeof(elem) !== "object") {
         throw new Error("Parameter is not an object !");
@@ -76,30 +105,40 @@ function () {
             field = _ref3[0],
             rules = _ref3[1];
 
-        _this2.checkRules(rules);
+        _this3.checkRules(rules);
 
-        _this2.validate(elem[field], name ? "".concat(name, ".").concat(field) : field, rules);
+        var value = elem[field];
+        var name = baseName ? "".concat(baseName, ".").concat(field) : field;
+
+        if (method === "POST") {
+          _this3.rules.required(value, name, rules.required);
+        } else if (method === "PATCH") {
+          _this3.rules.patchable(value, name, rules.patchable);
+        }
+
+        if (value === undefined) {
+          return;
+        }
+
+        _this3.validate(elem[field], name, rules);
       });
     }
   }, {
-    key: "validate",
-    value: function validate(value) {
-      var _this3 = this;
+    key: "_validate",
+    value: function _validate(value) {
+      var _this4 = this;
 
       var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
       var rules = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      this.rules.required(value, name, rules.required);
-
-      if (value === undefined) {
-        return;
-      }
-
       Object.entries(rules).forEach(function (_ref4) {
         var _ref5 = _slicedToArray(_ref4, 2),
             ruleName = _ref5[0],
             ruleValue = _ref5[1];
 
-        return _this3.rules[ruleName](value, name, ruleValue, _this3);
+        return _this4.rules[ruleName](value, name, ruleValue, {
+          check: _this4._check,
+          validate: _this4.validate
+        });
       });
     }
   }]);
@@ -108,4 +147,4 @@ function () {
 }();
 
 exports["default"] = Oops;
-//# sourceMappingURL=oops.js.map
+//# sourceMappingURL=Oops.js.map

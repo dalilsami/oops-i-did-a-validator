@@ -2,7 +2,7 @@
   "name": "oops-i-did-a-validator",
   "version": "1.0.0",
   "description": "oops-i-did-a-validator is a simple object validator. It has presetted rules given with and you can actually add rules when importing it.",
-  "main": "dist/oops.js",
+  "main": "dist/Oops.js",
   "scripts": {
     "build": "npm run clean && npm run build-babel",
     "build-babel": "babel -d ./dist ./src -s",

@@ -7,6 +7,7 @@ var _exportNames = {
   content: true,
   item: true,
   match: true,
+  patchable: true,
   required: true,
   type: true,
   values: true
@@ -27,6 +28,12 @@ Object.defineProperty(exports, "match", {
   enumerable: true,
   get: function get() {
     return _match["default"];
+  }
+});
+Object.defineProperty(exports, "patchable", {
+  enumerable: true,
+  get: function get() {
+    return _patchable["default"];
   }
 });
 Object.defineProperty(exports, "required", {
@@ -66,6 +73,8 @@ var _content = _interopRequireDefault(require("./content"));
 var _item = _interopRequireDefault(require("./item"));
 
 var _match = _interopRequireDefault(require("./match"));
+
+var _patchable = _interopRequireDefault(require("./patchable"));
 
 var _required = _interopRequireDefault(require("./required"));
 
